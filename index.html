@@ -1,3 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #3a7bd5;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #3a7bd5;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #00d2ff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3a7bd5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .success-box {
+      background: #e6f7ff;
+      border: 1px solid #3a7bd5;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #2a5fb8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Register</h2>
+
+  <div class="input-group">
+    <input type="text" id="firstName" placeholder="First Name (One word only)">
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="lastName" placeholder="Last Name">
+  </div>
+
+  <div class="input-group">
+    <input type="password" id="password" placeholder="Password (4-8 chars)">
+  </div>
+
+  <button id="submitBtn" onclick="submitForm()">Submit</button>
+
+  <div class="status" id="status"></div>
+</div>
+
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycby3PFpiWkrdOefg_CqSwujQHQOfJChTytW7u--h5jaI0BVGMRYim-1BCO9Llio906lwig/exec";
 
@@ -78,3 +189,6 @@
     btn.innerText = "Submit";
   }
 </script>
+
+</body>
+</html>
