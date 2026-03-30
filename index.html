@@ -75,7 +75,7 @@
 <div class="container">
   <h2>Register</h2>
 
-  <input type="text" id="firstName" placeholder="First Name (One word)">
+  <input type="text" id="firstName" placeholder="First Name (one word)">
   <input type="text" id="lastName" placeholder="Last Name">
   <input type="password" id="password" placeholder="Password (4-8 chars)">
 
@@ -85,7 +85,8 @@
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycby74s3q9DKJn79eNjPkvnXx1NSJnD8T5MHNzEGZ3ck2B54qFnl8WG055RQnD0c8XY_Vbg/exec";
+  // ✅ Your exact new Apps Script Web App URL
+  const API_URL = "https://script.google.com/macros/s/AKfycbxlhT8zWCmx7aZxMGetZJUAUIiY5U_AMT83gWCSAb14NWuxPL47E1XnKp7-1DbaOycbmQ/exec";
 
   function generateEmail(first, last) {
     return (first + last).toLowerCase() + "@trc.local";
@@ -93,22 +94,19 @@
 
   async function submitForm() {
     const status = document.getElementById("status");
-
     const first = document.getElementById("firstName").value.trim();
     const last = document.getElementById("lastName").value.trim();
     const password = document.getElementById("password").value;
 
-    // Simple validation
+    // Validation
     if (!first || first.includes(" ")) {
       status.innerHTML = "<span style='color:red'>First name must be one word</span>";
       return;
     }
-
     if (!last) {
       status.innerHTML = "<span style='color:red'>Last name required</span>";
       return;
     }
-
     if (password.length < 4 || password.length > 8) {
       status.innerHTML = "<span style='color:red'>Password must be 4-8 characters</span>";
       return;
@@ -116,11 +114,12 @@
 
     const email = generateEmail(first, last);
 
+    // FormData to match your Apps Script e.parameter
     const formData = new FormData();
-    formData.append("firstName", first);
-    formData.append("lastName", last);
-    formData.append("email", email);
-    formData.append("password", password);
+    formData.append("FIRSTNAME", first);
+    formData.append("LASTNAME", last);
+    formData.append("EMAIL", email);
+    formData.append("PASSWORD", password);
 
     try {
       const res = await fetch(API_URL, {
@@ -130,16 +129,17 @@
 
       const data = await res.json();
 
-      if (data.status === "success") {
+      if (data.result === "success") {
         status.innerHTML = `
           <div style="color:green;">✅ Successfully Registered!</div>
           <div class="success-box">Your Email:<br>${email}</div>
         `;
+        // Clear input fields
         document.getElementById("firstName").value = "";
         document.getElementById("lastName").value = "";
         document.getElementById("password").value = "";
       } else {
-        status.innerHTML = `<span style='color:red'>${data.message || "Error saving data"}</span>`;
+        status.innerHTML = `<span style='color:red'>${data.error || "Error saving data"}</span>`;
       }
 
     } catch (err) {
