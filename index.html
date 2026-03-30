@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Request Form</title>
+  <title>TRC Login Request</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +14,29 @@
     }
 
     body {
-      background: linear-gradient(135deg, #eaf4ff, #dbeafe);
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 22, 48, 0.50);
+      z-index: -1;
+    }
+
+    .page-wrap {
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -23,22 +46,25 @@
 
     .form-card {
       width: 100%;
-      max-width: 420px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      border-radius: 18px;
       padding: 28px 24px;
-      border: 1px solid #dbeafe;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.20);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
     }
 
-    .form-card h2 {
-      color: #1d4ed8;
+    .form-title {
       text-align: center;
-      margin-bottom: 8px;
+      color: #1d4ed8;
       font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
-    .form-card p {
+    .form-subtitle {
       text-align: center;
       color: #475569;
       font-size: 14px;
@@ -52,9 +78,9 @@
     .form-group label {
       display: block;
       margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: bold;
       color: #1e3a8a;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     .form-group input {
@@ -62,16 +88,17 @@
       padding: 12px 14px;
       border: 1px solid #bfdbfe;
       border-radius: 10px;
+      background: #f8fbff;
+      color: #0f172a;
       font-size: 14px;
       outline: none;
       transition: 0.2s ease;
-      background: #f8fbff;
     }
 
     .form-group input:focus {
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
       background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
     .form-group input[readonly] {
@@ -85,9 +112,9 @@
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
+      color: #ffffff;
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
       transition: 0.2s ease;
       margin-top: 8px;
@@ -99,11 +126,11 @@
     }
 
     .message {
+      min-height: 20px;
       margin-top: 16px;
       text-align: center;
       font-size: 14px;
       color: #1e40af;
-      min-height: 20px;
     }
 
     @media (max-width: 480px) {
@@ -111,42 +138,51 @@
         padding: 22px 18px;
       }
 
-      .form-card h2 {
+      .form-title {
         font-size: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="form-card">
-    <h2>Login Request</h2>
-    <p>Fill in your details below</p>
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="bg-trc.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
-    <form id="testForm">
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="text" id="firstName" required />
-      </div>
+  <div class="video-overlay"></div>
 
-      <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" required />
-      </div>
+  <div class="page-wrap">
+    <div class="form-card">
+      <div class="form-title">Login Request</div>
+      <div class="form-subtitle">Fill in your details below</div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" id="email" readonly />
-      </div>
+      <form id="testForm">
+        <div class="form-group">
+          <label for="firstName">First Name (One Name Only)</label>
+          <input type="text" id="firstName" required />
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password (Min 4 Max 8)</label>
-        <input type="password" id="password" minlength="4" maxlength="8" required />
-      </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" required />
+        </div>
 
-      <button type="submit" class="submit-btn">Submit Request</button>
-    </form>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" readonly />
+        </div>
 
-    <div class="message" id="msg"></div>
+        <div class="form-group">
+          <label for="password">Password (Min 4 Max 8)</label>
+          <input type="password" id="password" minlength="4" maxlength="8" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Request</button>
+      </form>
+
+      <div class="message" id="msg"></div>
+    </div>
   </div>
 
   <script>
