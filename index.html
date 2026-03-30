@@ -110,7 +110,7 @@
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycby3PFpiWkrdOefg_CqSwujQHQOfJChTytW7u--h5jaI0BVGMRYim-1BCO9Llio906lwig/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbyoahKqToXSShDjBSM4EomqP4BhzHzgn6goHFxoVflRdPAzKR4hAqOp2rp6aAXD5_HfOg/exec";
 
   function generateEmail(first, last) {
     return (first + last).toLowerCase() + "@trc.local";
@@ -155,6 +155,9 @@
     try {
       const res = await fetch(API_URL, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           firstName: first,
           lastName: last,
@@ -177,7 +180,7 @@
         document.getElementById("lastName").value = "";
         document.getElementById("password").value = "";
       } else {
-        status.innerHTML = `<span style="color:red;">Error saving data</span>`;
+        status.innerHTML = `<span style="color:red;">${data.message || "Error saving data"}</span>`;
       }
 
     } catch (err) {
