@@ -1,153 +1,227 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Request Form</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(135deg, #eaf4ff, #dbeafe);
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .container {
-      background: #fff;
-      padding: 25px;
-      border-radius: 14px;
+    .form-card {
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+      padding: 28px 24px;
+      border: 1px solid #dbeafe;
     }
 
-    h2 {
+    .form-card h2 {
+      color: #1d4ed8;
       text-align: center;
-      color: #3a7bd5;
+      margin-bottom: 8px;
+      font-size: 28px;
     }
 
-    input {
+    .form-card p {
+      text-align: center;
+      color: #475569;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+
+    .form-group input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 12px 14px;
+      border: 1px solid #bfdbfe;
       border-radius: 10px;
-      border: 2px solid #3a7bd5;
-      font-size: 16px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s ease;
+      background: #f8fbff;
     }
 
-    button {
+    .form-group input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      background: #ffffff;
+    }
+
+    .form-group input[readonly] {
+      background: #eff6ff;
+      color: #334155;
+    }
+
+    .submit-btn {
       width: 100%;
-      padding: 12px;
-      background: #3a7bd5;
-      color: white;
+      padding: 13px;
       border: none;
       border-radius: 10px;
-      margin-top: 10px;
-      font-size: 16px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
       cursor: pointer;
+      transition: 0.2s ease;
+      margin-top: 8px;
     }
 
-    .status {
-      margin-top: 15px;
+    .submit-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .message {
+      margin-top: 16px;
       text-align: center;
       font-size: 14px;
+      color: #1e40af;
+      min-height: 20px;
     }
 
-    .success-box {
-      margin-top: 10px;
-      padding: 10px;
-      background: #e6f7ff;
-      border-radius: 8px;
-      font-weight: bold;
-      color: #2a5fb8;
+    @media (max-width: 480px) {
+      .form-card {
+        padding: 22px 18px;
+      }
+
+      .form-card h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
-
 <body>
+  <div class="form-card">
+    <h2>Login Request</h2>
+    <p>Fill in your details below</p>
 
-<div class="container">
-  <h2>Register</h2>
+    <form id="testForm">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" required />
+      </div>
 
-  <input type="text" id="firstName" placeholder="First Name (one word)">
-  <input type="text" id="lastName" placeholder="Last Name">
-  <input type="password" id="password" placeholder="Password (4-8 chars)">
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" required />
+      </div>
 
-  <button onclick="submitForm()">Submit</button>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" readonly />
+      </div>
 
-  <div class="status" id="status"></div>
-</div>
+      <div class="form-group">
+        <label for="password">Password (Min 4 Max 8)</label>
+        <input type="password" id="password" minlength="4" maxlength="8" required />
+      </div>
 
-<script>
-  // ✅ Your exact new Apps Script Web App URL
-  const API_URL = "https://script.google.com/macros/s/AKfycbxlhT8zWCmx7aZxMGetZJUAUIiY5U_AMT83gWCSAb14NWuxPL47E1XnKp7-1DbaOycbmQ/exec";
+      <button type="submit" class="submit-btn">Submit Request</button>
+    </form>
 
-  function generateEmail(first, last) {
-    return (first + last).toLowerCase() + "@trc.local";
-  }
+    <div class="message" id="msg"></div>
+  </div>
 
-  async function submitForm() {
-    const status = document.getElementById("status");
-    const first = document.getElementById("firstName").value.trim();
-    const last = document.getElementById("lastName").value.trim();
-    const password = document.getElementById("password").value;
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycby8U9PqJx8vWMb2cev23T3keuJqSoLkjgQdENUnowtILvj6KF6DU-4ReXZx18qYygy9Lg/exec';
 
-    // Validation
-    if (!first || first.includes(" ")) {
-      status.innerHTML = "<span style='color:red'>First name must be one word</span>";
-      return;
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const form = document.getElementById('testForm');
+    const msg = document.getElementById('msg');
+
+    function cleanName(value) {
+      return value.replace(/[^a-zA-Z]/g, '').toLowerCase();
     }
-    if (!last) {
-      status.innerHTML = "<span style='color:red'>Last name required</span>";
-      return;
-    }
-    if (password.length < 4 || password.length > 8) {
-      status.innerHTML = "<span style='color:red'>Password must be 4-8 characters</span>";
-      return;
-    }
 
-    const email = generateEmail(first, last);
+    function updateEmail() {
+      const firstName = cleanName(firstNameInput.value);
+      const lastName = cleanName(lastNameInput.value);
 
-    // FormData to match your Apps Script e.parameter
-    const formData = new FormData();
-    formData.append("FIRSTNAME", first);
-    formData.append("LASTNAME", last);
-    formData.append("EMAIL", email);
-    formData.append("PASSWORD", password);
-
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await res.json();
-
-      if (data.result === "success") {
-        status.innerHTML = `
-          <div style="color:green;">✅ Successfully Registered!</div>
-          <div class="success-box">Your Email:<br>${email}</div>
-        `;
-        // Clear input fields
-        document.getElementById("firstName").value = "";
-        document.getElementById("lastName").value = "";
-        document.getElementById("password").value = "";
+      if (firstName && lastName) {
+        emailInput.value = firstName + lastName + '@trc.local';
       } else {
-        status.innerHTML = `<span style='color:red'>${data.error || "Error saving data"}</span>`;
+        emailInput.value = '';
+      }
+    }
+
+    firstNameInput.addEventListener('input', updateEmail);
+    lastNameInput.addEventListener('input', updateEmail);
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!firstName || !lastName || !email || !password) {
+        msg.textContent = 'Please complete all fields.';
+        return;
       }
 
-    } catch (err) {
-      status.innerHTML = "<span style='color:red'>Network error</span>";
-      console.error(err);
-    }
-  }
-</script>
+      if (password.length < 4 || password.length > 8) {
+        msg.textContent = 'Password must be 4 to 8 characters only.';
+        return;
+      }
 
+      const formData = new FormData();
+      formData.append('FIRSTNAME', firstName);
+      formData.append('LASTNAME', lastName);
+      formData.append('EMAIL', email);
+      formData.append('PASSWORD', password);
+
+      msg.textContent = 'Submitting...';
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.result === 'success') {
+          msg.textContent = 'Submitted successfully.';
+          form.reset();
+          emailInput.value = '';
+        } else {
+          msg.textContent = 'Error: ' + (result.error || 'Unknown error');
+        }
+      } catch (error) {
+        msg.textContent = 'Fetch error: ' + error.message;
+      }
+    });
+  </script>
 </body>
 </html>
