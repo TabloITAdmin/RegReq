@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #3a7bd5;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 2px solid #3a7bd5;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #00d2ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3a7bd5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2a5fb8;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Register</h2>
+
+  <input type="text" id="firstName" placeholder="First Name (One name only)">
+  <input type="text" id="lastName" placeholder="Last Name">
+  <input type="password" id="password" placeholder="Password (4-8 chars)">
+
+  <button onclick="submitForm()">Submit</button>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycby3PFpiWkrdOefg_CqSwujQHQOfJChTytW7u--h5jaI0BVGMRYim-1BCO9Llio906lwig/exec";
+
+  function generateEmail(first, last) {
+    return (first + last).toLowerCase() + "@trc.local";
+  }
+
+  function validate(first, last, password) {
+    if (!first || first.includes(" ")) {
+      return "First name must be one word only";
+    }
+
+    if (!last) {
+      return "Last name required";
+    }
+
+    if (password.length < 4 || password.length > 8) {
+      return "Password must be 4-8 characters";
+    }
+
+    return null;
+  }
+
+  async function submitForm() {
+    const first = document.getElementById("firstName").value.trim();
+    const last = document.getElementById("lastName").value.trim();
+    const password = document.getElementById("password").value;
+
+    const status = document.getElementById("status");
+
+    const error = validate(first, last, password);
+    if (error) {
+      status.innerText = error;
+      status.style.color = "red";
+      return;
+    }
+
+    const email = generateEmail(first, last);
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          firstName: first,
+          lastName: last,
+          email: email,
+          password: password
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        status.innerText = "Saved! Email: " + email;
+        status.style.color = "green";
+
+        document.getElementById("firstName").value = "";
+        document.getElementById("lastName").value = "";
+        document.getElementById("password").value = "";
+      } else {
+        status.innerText = "Error saving data";
+        status.style.color = "red";
+      }
+
+    } catch (err) {
+      status.innerText = "Network error";
+      status.style.color = "red";
+    }
+  }
+</script>
+
+</body>
+</html>
