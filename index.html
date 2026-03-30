@@ -1,87 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-
-    h2 {
-      text-align: center;
-      color: #3a7bd5;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 2px solid #3a7bd5;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #00d2ff;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #3a7bd5;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #2a5fb8;
-    }
-
-    .status {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="container">
-  <h2>Register</h2>
-
-  <input type="text" id="firstName" placeholder="First Name (One name only)">
-  <input type="text" id="lastName" placeholder="Last Name">
-  <input type="password" id="password" placeholder="Password (4-8 chars)">
-
-  <button onclick="submitForm()">Submit</button>
-
-  <div class="status" id="status"></div>
-</div>
-
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycby3PFpiWkrdOefg_CqSwujQHQOfJChTytW7u--h5jaI0BVGMRYim-1BCO9Llio906lwig/exec";
 
@@ -95,7 +11,7 @@
     }
 
     if (!last) {
-      return "Last name required";
+      return "Last name is required";
     }
 
     if (password.length < 4 || password.length > 8) {
@@ -106,20 +22,24 @@
   }
 
   async function submitForm() {
+    const btn = document.getElementById("submitBtn");
+    const status = document.getElementById("status");
+
     const first = document.getElementById("firstName").value.trim();
     const last = document.getElementById("lastName").value.trim();
     const password = document.getElementById("password").value;
 
-    const status = document.getElementById("status");
-
     const error = validate(first, last, password);
+
     if (error) {
-      status.innerText = error;
-      status.style.color = "red";
+      status.innerHTML = `<span style="color:red">${error}</span>`;
       return;
     }
 
     const email = generateEmail(first, last);
+
+    btn.disabled = true;
+    btn.innerText = "Saving...";
 
     try {
       const res = await fetch(API_URL, {
@@ -135,23 +55,26 @@
       const data = await res.json();
 
       if (data.status === "success") {
-        status.innerText = "Saved! Email: " + email;
-        status.style.color = "green";
+        status.innerHTML = `
+          <div style="color:green;">✅ Successfully Registered!</div>
+          <div class="success-box">
+            Your Email:<br>${email}
+          </div>
+        `;
 
         document.getElementById("firstName").value = "";
         document.getElementById("lastName").value = "";
         document.getElementById("password").value = "";
       } else {
-        status.innerText = "Error saving data";
-        status.style.color = "red";
+        status.innerHTML = `<span style="color:red;">Error saving data</span>`;
       }
 
     } catch (err) {
-      status.innerText = "Network error";
-      status.style.color = "red";
+      console.error(err);
+      status.innerHTML = `<span style="color:red;">Network error</span>`;
     }
+
+    btn.disabled = false;
+    btn.innerText = "Submit";
   }
 </script>
-
-</body>
-</html>
